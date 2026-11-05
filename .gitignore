@@ -1,0 +1,6 @@
+# loot and scratch
+loot/
+*.hash
+*.swp
+nmap.txt
+.DS_Store
