@@ -115,8 +115,7 @@ which is why the writeups below read like real engagements and not copied walkth
 
 ## 4. Highlight reel
 
-The strongest chains, the ones worth talking through in an interview. Each shows a full
-attack path plus the real friction I worked through.
+The strongest multi-stage chains in the set. Each shows a full attack path plus the real friction I worked through.
 
 ### 4.1 Forest — Active Directory domain takeover (flagship)
 **Windows DC · Easy · AS-REP Roasting -> BloodHound ACL abuse -> WriteDACL -> DCSync -> Pass-the-Hash**
@@ -135,9 +134,10 @@ password.
   (`Add-DomainObjectAcl ... -Rights DCSync`) to grant myself replication rights, then
   `impacket-secretsdump` (DCSync) dumped the Administrator NTLM hash.
 - **Domain Admin:** `impacket-psexec ... -hashes :<NTLM>` (Pass-the-Hash).
-- **Why it matters:** this is the canonical AD kill chain and the single clearest
-  demonstration of the skills the OSCP AD set tests. One roastable account plus
-  over-permissive group ACLs equals total domain compromise.
+- **Why it matters:** a single account with Kerberos pre-authentication disabled, plus
+  a chain of over-permissive group ACLs, was enough to take the whole domain without
+  ever cracking the Administrator password. This is the canonical Active Directory kill
+  chain.
 
 ### 4.2 Unified — Log4Shell (CVE-2021-44228) to domain data
 **Linux · the hardest box in the set · JNDI/LDAP RCE -> MongoDB credential overwrite -> SSH root**
@@ -264,8 +264,6 @@ All 26 machines, organized by tier. Flags omitted per HTB policy.
 | Mongod | Linux | Unauthenticated MongoDB | Connect, `show dbs`, read the collection |
 | Synced | Linux | Exposed rsync | List and pull the anonymous `public` module |
 
-*Tier 0 lesson that stuck:* I initially scanned my own VPN IP instead of the target.
-Internalising `10.10.x.x = me, 10.129.x.x = target` early saved me on every box after.
 
 ### Starting Point — Tier 1 (first real chains)
 
@@ -308,7 +306,7 @@ deduced from the onboarding email rather than guessing.
 
 ---
 
-## 6. What this journey taught me (interview talking points)
+## 6. What this journey taught me
 
 - **Methodology beats memorisation.** Every box reduced to the same loop: enumerate a
   service for its own weakness, exploit it, enumerate the host, match a finding to a
@@ -318,15 +316,8 @@ deduced from the onboarding email rather than guessing.
   to SYSTEM, PowerShell history to stored creds. I recognise the shape, I do not guess.
 - **The debugging is the skill.** My most valuable lessons came from what went wrong:
   the two-IP confusion on Unified, the URL-encoding bug on Included, the session cookie
-  on Base, the broken TTY on Vaccine. Real engagements are mostly troubleshooting, and
-  these writeups prove I can do it.
-- **My background is an advantage.** Years of ISP network support and Active Directory
-  administration mean I understand the defender's side: why Kerberos pre-auth matters,
-  why localhost-only binding exists, why default credentials persist. I attack with that
-  context, and I can explain the remediation as clearly as the exploit.
-- **I specialise toward web and AD.** My developer background makes web-app flaws
-  (SSTI, XXE, IDOR, type juggling, Log4Shell) intuitive, and my networking background
-  makes Active Directory my strongest offensive domain.
+  on Base, the broken TTY on Vaccine. Real engagements are mostly troubleshooting.
+
 
 ---
 

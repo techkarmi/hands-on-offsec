@@ -95,8 +95,4 @@ tier and audit privileged group membership, and alert on DCSync (directory repli
 originating from non-DC accounts.
 
 ## My note
-Coming from years of Active Directory administration, this box is the one I can talk
-through most confidently in an interview, because I understand both the attack and why
-each misconfiguration exists in real environments. BloodHound turning a tangle of ACLs
-into a clear shortest path to Domain Admin is the single most important AD tradecraft on
-the box.
+Coming from years of Active Directory administration, what struck me on this box was seeing both sides at once: I know why each of these misconfigurations exists in a real environment (service accounts with pre-auth disabled for a legacy app, nested group membership nobody ever audited), and here they chain straight to Domain Admin. BloodHound turning a tangle of ACLs into a clear shortest path was the moment the attack side of AD clicked for me.
